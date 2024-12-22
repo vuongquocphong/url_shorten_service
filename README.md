@@ -1,5 +1,7 @@
 # url_shorten_service
 
+Project URL: [https://roadmap.sh/projects/url-shortening-service](https://roadmap.sh/projects/url-shortening-service)
+
 ## API Endpoints
 
 ### Create Short URL
