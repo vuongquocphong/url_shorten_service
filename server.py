@@ -57,6 +57,9 @@ class UrlShortener:
         else:
             return None
 
+    def stats(self, short_code):
+        return db.collection.find_one({"short_code": short_code})
+
 
 url_shortener = UrlShortener()
 
@@ -81,16 +84,6 @@ def get(short_code):
         url_info["_id"] = str(url_info["_id"])  # Convert ObjectId to string
         url_info["created_at"] = url_info["created_at"].isoformat()
         url_info["modified_at"] = url_info["modified_at"].isoformat()
-        url_info["access_count"] += 1
-        db.collection.update_one(
-            {"short_code": short_code},
-            {
-                "$set": {
-                    "access_count": url_info["access_count"],
-                    "modified_at": datetime.datetime.now(),
-                }
-            },
-        )
         return jsonify(url_info)
     else:
         return jsonify({"error": "Not found"}), 404
@@ -114,6 +107,17 @@ def update(short_code):
         updated_info["created_at"] = updated_info["created_at"].isoformat()
         updated_info["modified_at"] = updated_info["modified_at"].isoformat()
         return jsonify(updated_info)
+    else:
+        return jsonify({"error": "Not found"}), 404
+
+@app.route("/shorten/<short_code>/stats", methods=["GET"])
+def stats(short_code):
+    url_info = url_shortener.stats(short_code)
+    if url_info:
+        url_info["_id"] = str(url_info["_id"])  # Convert ObjectId to string
+        url_info["created_at"] = url_info["created_at"].isoformat()
+        url_info["modified_at"] = url_info["modified_at"].isoformat()
+        return jsonify(url_info)
     else:
         return jsonify({"error": "Not found"}), 404
 

@@ -37,3 +37,17 @@ DELETE /<short_url>
 ```{bash}
 GET /<short_url>/stats
 ```
+
+## How to run
+
+### Run the server
+
+```{bash}
+python server.py
+```
+
+### Run the GUI client
+
+```{bash}
+python gui_client.py
+```
